@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-// MARK: codebrainz/color-names!!!!!
+// MARK: codebrainz/color-names!!!
 class Model: ObservableObject {
     @Published var palettes: [Palette]
     let integratedColors: [PaletteItem]
