@@ -5,6 +5,8 @@
 //  Created by Alessio Garzia Marotta Brusco on 29/03/23.
 //
 
+// TODO: Name suggestion view
+
 import SwiftUI
 
 struct PaletteEditor: View {
@@ -14,6 +16,7 @@ struct PaletteEditor: View {
     //    @Environment(\.rename) private var rename
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.colorScheme) private var colorScheme
     
     @State private var selectedItem: PaletteItem?
     @State private var showingReport = false
@@ -37,6 +40,7 @@ struct PaletteEditor: View {
                     }
                 }
                 .padding(.horizontal)
+                .padding(.top)
                 .frame(maxWidth: .infinity)
             }
             
@@ -44,8 +48,10 @@ struct PaletteEditor: View {
             
             // Try using half-sheet with interactive background.
             DynamicStack(spacing: 0) {
-                Divider()
-                    .ignoresSafeArea()
+                if horizontalSizeClass == .regular {
+                    Divider()
+                        .ignoresSafeArea()
+                }
                 
                 Group {
                     if let selectedItem {
@@ -67,14 +73,16 @@ struct PaletteEditor: View {
                 }
                 .frame(
                     maxWidth: horizontalSizeClass == .compact ? nil : 400,
-                    maxHeight: horizontalSizeClass == .compact ? 300 : nil
+                    maxHeight: horizontalSizeClass == .compact ? 550 : nil
                 )
+                .compositingGroup()
+                .shadow(color: primaryColorInverted.opacity(0.2), radius: horizontalSizeClass == .compact ? 8 : 0)
             }
         }
         .toolbarRole(.editor)
-        //        .toolbarBackground(.visible, for: .automatic)
         .navigationTitle($palette.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(horizontalSizeClass == .compact ? .automatic : .visible, for: .navigationBar)
         .navigationDocument(palette)
         .toolbarTitleMenu {
             // Can't get the 'pencil' icon to show up.
@@ -107,19 +115,24 @@ struct PaletteEditor: View {
         }
         
     }
+    var primaryColorInverted: Color {
+        (colorScheme == .light) ? .white : .black
+    }
     
     func selectedItemBinding(unwrappedSelected: PaletteItem) -> Binding<PaletteItem> {
         let index = model.index(for: unwrappedSelected, in: palette)
         
         return Binding<PaletteItem> {
-            palette.items[index]
+            guard palette.items.indices.contains(index) else { return .init() }
+            return palette.items[index]
         } set: { value in
             palette.items[index] = value
         }
     }
     
     func addItem() {
-        let item = PaletteItem()
+        let name = "Item \(palette.items.count + 1)"
+        let item = PaletteItem(name: name)
         
         withAnimation {
             palette.items.append(item)

@@ -67,20 +67,22 @@ struct RGBSlider: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                HStack {
-                    Button(action: previousField) {
-                        Label("Previous Field", systemImage: "chevron.up")
+            if focused != nil {
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Button(action: previousField) {
+                            Label("Previous Field", systemImage: "chevron.up")
+                        }
+                        .disabled(focused == .r)
+                        
+                        Button(action: nextField) {
+                            Label("Next Field", systemImage: "chevron.down")
+                        }
+                        .disabled(focused == .b)
+                        
+                        Spacer()
+                        Button("Done") { focused = nil }
                     }
-                    .disabled(focused == .r)
-                    
-                    Button(action: nextField) {
-                        Label("Next Field", systemImage: "chevron.down")
-                    }
-                    .disabled(focused == .b)
-                    
-                    Spacer()
-                    Button("Done") { focused = nil }
                 }
             }
         }

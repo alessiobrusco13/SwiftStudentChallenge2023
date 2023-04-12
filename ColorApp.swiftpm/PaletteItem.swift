@@ -1,14 +1,25 @@
 import SwiftUI
 
 struct PaletteItem: Identifiable, Codable, Equatable {
-    enum Role: Codable {
+    enum Role: Codable, CaseIterable {
         case accent, text, background
+        
+        var sfSymbol: String {
+            switch self {
+            case .accent:
+                return "square.dashed.inset.fill"
+            case .background:
+                return "doc.richtext.fill"
+            case .text:
+                return "character.cursor.ibeam"
+            }
+        }
     }
     
     var id = UUID()
     var color = Color.black
+    var name = "Untitled"
     var role: Role?
-    var name: String?
     var feeling: Feeling?
     
     static func ==(lhs: PaletteItem, rhs: PaletteItem) -> Bool {
