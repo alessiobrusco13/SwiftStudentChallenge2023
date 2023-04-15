@@ -14,15 +14,15 @@ struct EditorSidebar: View {
     @State private var showingNameField = false
     @FocusState private var nameFocused: Bool
     
-    @State private var isScrolling = false
+    var feelings: [Feeling] {
+        model.feelings(for: selection)
+    }
     
     var body: some View {
         Form {
             Section {
                 RGBSlider(paletteItem: $selection)
                     .padding(8)
-                
-                Text(String(describing: isScrolling))
             } header: {
                 VStack(alignment: .leading, spacing: 0) {
                     Color.clear
@@ -32,7 +32,23 @@ struct EditorSidebar: View {
                 }
             }
             
-            // TODO: Overlay with suggested name
+            Section("Feelings Editor") {
+//                Picker("**Feeling:**", selection: $selection.feeling) {
+//                    ForEach(feelings, id: \.self) { feeling in
+//                        Text(feeling.label)
+//                            .tag(Optional(feeling))
+//                    }
+//
+//                    Text("Emotionless 😶")
+//                        .tag(Optional<Feeling>.none)
+//                }
+                
+                FeelingPicker(selection: $selection.feeling, feelings: feelings)
+                    .frame(height: 150)
+                    .padding(.top)
+            }
+            
+            // TODO: Overlay with suggested name.
             Section {
                 LabeledContent("**Name:**") {
                     TextField("e.g. Red", text: $selection.name)
@@ -46,7 +62,7 @@ struct EditorSidebar: View {
                             .tag(Optional(role))
                     }
                     
-                    Label("Not Set", systemImage: "questionmark.app")
+                    Label("Not set", systemImage: "questionmark.square")
                         .tag(Optional<PaletteItem.Role>.none)
                 }
             } header: {
@@ -64,7 +80,6 @@ struct EditorSidebar: View {
                 }
             }
         }
-        // TODO: Figure out how to update the background. it sucks.
         .overlay(alignment: .top) {
             Text("Inspector")
                 .padding(.horizontal, 20)
@@ -84,11 +99,18 @@ struct EditorSidebar: View {
                 }
             }
         }
+        .onChange(of: selection.feeling) { feeling in
+            guard let feeling else { return }
+            if !feelings.contains(feeling), let random = feelings.randomElement() {
+                selection.feeling = random
+            }
+        }
     }
 }
 
 struct EditorSidebar_Previews: PreviewProvider {
     static var previews: some View {
         EditorSidebar(selection: .constant(.init()))
+            .environmentObject(Model())
     }
 }

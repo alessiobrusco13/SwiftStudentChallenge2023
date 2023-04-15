@@ -106,13 +106,9 @@ extension RGBSlider {
             }
         }
         
-        func updateValue(maxWidth: Double, offset: Double) {
+        func colorValue(maxWidth: Double, offset: Double) -> Int {
             // offset : width = color : 255
-            let colorValue = Int(((offset * 255.0) / maxWidth).rounded())
-            
-            sliderValue { value in
-                value = colorValue
-            }
+            Int(((offset * 255.0) / maxWidth).rounded())
         }
         
         func drag(_ proxy: GeometryProxy) -> some Gesture {
@@ -125,11 +121,20 @@ extension RGBSlider {
                         
                         let maxWidth = width - 30
                         
-                        // TODO: Make the pointer snap when close to 0 or 255.
                         if newOffset < maxWidth && newOffset > 0 {
                             offset = newOffset
                             withAnimation(.none) {
-                                updateValue(maxWidth: maxWidth, offset: newOffset)
+                                _ = sliderValue { value in
+                                    let colorValue = colorValue(maxWidth: maxWidth, offset: offset)
+                                    
+                                    if colorValue < 10 {
+                                        value = 0
+                                    } else if colorValue > 245  {
+                                        value = 255
+                                    } else {
+                                        value = colorValue
+                                    }
+                                }
                             }
                         }
                     }

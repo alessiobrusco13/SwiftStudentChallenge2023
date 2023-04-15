@@ -37,6 +37,14 @@ struct PaletteEditor: View {
                             ColorGridItem(paletteItem: $item)
                         }
                         .buttonStyle(.selectable(isSelected: isSelected(item: item)))
+                        .contextMenu {
+                            Button("Delete", role: .destructive) {
+                                withAnimation {
+                                    let index = model.index(for: item, in: palette)
+                                    palette.items.remove(at: index)
+                                }
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -71,10 +79,8 @@ struct PaletteEditor: View {
                             }
                     }
                 }
-                .frame(
-                    maxWidth: horizontalSizeClass == .compact ? nil : 400,
-                    maxHeight: horizontalSizeClass == .compact ? 550 : nil
-                )
+                .frame(maxWidth: horizontalSizeClass == .compact ? nil : 400)
+                .frame(height: horizontalSizeClass == .compact ? 450 : nil)
                 .compositingGroup()
                 .shadow(color: primaryColorInverted.opacity(0.2), radius: horizontalSizeClass == .compact ? 8 : 0)
             }
