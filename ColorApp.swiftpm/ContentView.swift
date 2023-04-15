@@ -20,14 +20,10 @@ struct ContentView: View {
                                 PaletteGridItem(palette: $palette)
                                     .transition(.scale)
                                     .contextMenu {
-                                        Button(role: .destructive) {
+                                        DeleteButton("Delete Palette") {
                                             withAnimation {
-                                                withAnimation {
-                                                    model.delete(palette)
-                                                }
+                                                model.delete(palette)
                                             }
-                                        } label: {
-                                            Label("Delete Palette", systemImage: "trash")
                                         }
                                     }
                             }

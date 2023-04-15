@@ -4,6 +4,10 @@ enum Feeling: Codable, CaseIterable, Hashable {
     case power, excitement, love, anger, competence, happiness, lowQuality, ecoFriendliness, health, sophistication, corporate, reliability, authority, sincerity, warmth, ruggedness, fear, expensiveness, purity, neutrality, balance, inexpensiveness, envy, money, hope
     
     var label: String {
+        "\(emoji) \(text)"
+    }
+    
+    var text: String {
         switch self {
         case .lowQuality:
             return "Low Quality"
@@ -17,7 +21,7 @@ enum Feeling: Codable, CaseIterable, Hashable {
     var emoji: String {
         switch self {
         case .power:
-            return "replace"
+            return "💪"
         case .excitement:
             return "🥳"
         case .love:

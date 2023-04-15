@@ -15,7 +15,9 @@ struct EditorSidebar: View {
     @FocusState private var nameFocused: Bool
     
     var feelings: [Feeling] {
-        model.feelings(for: selection)
+        withAnimation {
+            model.feelings(for: selection)
+        }
     }
     
     var body: some View {
@@ -35,7 +37,7 @@ struct EditorSidebar: View {
             Section("Feelings Editor") {
 //                Picker("**Feeling:**", selection: $selection.feeling) {
 //                    ForEach(feelings, id: \.self) { feeling in
-//                        Text(feeling.label)
+//                        Text(feeling.text)
 //                            .tag(Optional(feeling))
 //                    }
 //
@@ -97,12 +99,6 @@ struct EditorSidebar: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-            }
-        }
-        .onChange(of: selection.feeling) { feeling in
-            guard let feeling else { return }
-            if !feelings.contains(feeling), let random = feelings.randomElement() {
-                selection.feeling = random
             }
         }
     }

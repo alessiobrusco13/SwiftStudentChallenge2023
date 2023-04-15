@@ -38,7 +38,7 @@ struct PaletteEditor: View {
                         }
                         .buttonStyle(.selectable(isSelected: isSelected(item: item)))
                         .contextMenu {
-                            Button("Delete", role: .destructive) {
+                            DeleteButton {
                                 withAnimation {
                                     let index = model.index(for: item, in: palette)
                                     palette.items.remove(at: index)
@@ -54,7 +54,7 @@ struct PaletteEditor: View {
             
             Spacer(minLength: 0)
             
-            // Try using half-sheet with interactive background.
+            // Try using half-sheet with interactive background.ù
             DynamicStack(spacing: 0) {
                 if horizontalSizeClass == .regular {
                     Divider()
