@@ -23,13 +23,14 @@ struct Palette: Identifiable, Codable, Hashable, Transferable {
         
         palette.name = "Example Palette"
         palette.items = [
-            PaletteItem(color: .mint, role: .accent),
-            PaletteItem(color: .white),
-            PaletteItem(color: .gray),
-            PaletteItem(color: .green),
-            PaletteItem(color: .indigo),
-            PaletteItem(color: .blue),
-            PaletteItem(color: .purple)
+            PaletteItem(color: .mint, role: .accent, feeling: .anger),
+            PaletteItem(color: .white, feeling: .anger),
+            PaletteItem(color: .gray, feeling: .balance),
+            PaletteItem(color: .green, feeling: .balance),
+            PaletteItem(color: .indigo, feeling: .excitement),
+            PaletteItem(color: .blue, feeling: .excitement),
+            PaletteItem(color: .purple, feeling: .ecoFriendliness),
+            PaletteItem(color: .brown, feeling: .authority)
         ]
         return palette
     }()

@@ -7,39 +7,65 @@
 
 import SwiftUI
 
-extension FeelingsPieChart {
-    struct SliceView: View {
-        let data: FeelingsReport.ChartData
-        let center: CGPoint
-        let radius: Double
-        
-        var body: some View {
-            ZStack {
+struct SliceShape: InsettableShape {
+    let startAngle: Angle
+    let endAngle: Angle
+    
+    var insetAmount = 0.0
+    
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            let center = CGPoint(x: rect.midX, y: rect.midY)
+            let radius = (rect.width * 0.5) - insetAmount
+            path.move(to: center)
+            path.addArc(center: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+            
+            path = Path(path.cgPath.symmetricDifference(
                 Path { path in
                     path.move(to: center)
-                    path.addArc(center: center, radius: radius, startAngle: data.startAngle, endAngle: data.endAngle, clockwise: false)
-                    substruct(percent: 0.8, to: &path)
-                }
-                .fill(.indigo.gradient)
-            }
-        }
-        
-        func substruct(percent: Double, to path: inout Path) {
-            path = Path(path.cgPath.subtracting(
-                Path { path in
-                    path.move(to: center)
-                    path.addArc(center: center, radius: radius * percent, startAngle: data.startAngle, endAngle: data.endAngle, clockwise: false)
+                    path.addArc(center: center, radius: radius * 0.6, startAngle: startAngle, endAngle: endAngle, clockwise: false)
                 }.cgPath
             ))
+        }
+    }
+    
+    func inset(by amount: CGFloat) -> some InsettableShape {
+        var slice = self
+        slice.insetAmount += amount
+        return slice
+    }
+}
+
+extension FeelingsPieChart {
+    struct Slice: View {
+        let data: FeelingsReport.ChartData
+        let strokeWidth: Double
+        
+        var body: some View {
+            Group {
+                if data.colors.count > 1 {
+                    SliceShape(startAngle: data.startAngle, endAngle: data.endAngle)
+                        .fill(.conicGradient(colors: data.colors, center: .center))
+                } else if let first = data.colors.first {
+                    SliceShape(startAngle: data.startAngle, endAngle: data.endAngle)
+                        .fill(first.gradient)
+                }
+            }
+            .overlay {
+                SliceShape(startAngle: data.startAngle, endAngle: data.endAngle)
+                    .strokeBorder(
+                        .regularMaterial.shadow(.inner(color: .primary.opacity(0.6), radius: 0.3)),
+                        style: StrokeStyle(lineWidth: strokeWidth, lineJoin: .round)
+                    )
+            }
         }
     }
 }
 
 struct Slice_Previews: PreviewProvider {
     static var previews: some View {
-        GeometryReader { geo in
-            let frame = geo.frame(in: .local)
-            FeelingsPieChart.SliceView(data: FeelingsReport(palette: .example).chartData.first!, center: CGPoint(x: frame.midX, y: frame.midY), radius: frame.width * 0.5)
+        ZStack {
+            FeelingsPieChart.Slice(data: FeelingsReport(palette: .example).chartData.first!, strokeWidth: 10)
         }
     }
 }

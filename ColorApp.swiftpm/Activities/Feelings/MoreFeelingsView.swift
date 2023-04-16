@@ -52,6 +52,16 @@ struct MoreFeelingsView: View {
             } message: { feeling in
                 Text("The color you created may not convey \(feeling.text.lowercased()).")
             }
+            .toolbar {
+                Button(action: dismiss.callAsFunction) {
+                    Label("Dismiss", systemImage: "xmark")
+                        .font(.footnote.weight(.semibold).width(.expanded))
+                        .foregroundColor(.primary)
+                        .padding(8)
+                        .background(.thickMaterial)
+                        .clipShape(Circle())
+                }
+            }
         }
     }
 }

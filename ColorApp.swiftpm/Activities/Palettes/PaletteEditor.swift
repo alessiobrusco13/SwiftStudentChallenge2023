@@ -20,9 +20,6 @@ struct PaletteEditor: View {
     
     @State private var selectedItem: PaletteItem?
     @State private var showingReport = false
-    
-    @State private var isRed = false
-    
     @AccessibilityFocusState private var editorFocused: Bool
     
     var body: some View {
@@ -47,14 +44,13 @@ struct PaletteEditor: View {
                         }
                     }
                 }
-                .padding(.horizontal)
-                .padding(.top)
+                .padding()
                 .frame(maxWidth: .infinity)
             }
             
             Spacer(minLength: 0)
             
-            // Try using half-sheet with interactive background.ù
+            // Try using half-sheet with interactive background.
             DynamicStack(spacing: 0) {
                 if horizontalSizeClass == .regular {
                     Divider()
@@ -80,7 +76,7 @@ struct PaletteEditor: View {
                     }
                 }
                 .frame(maxWidth: horizontalSizeClass == .compact ? nil : 400)
-                .frame(height: horizontalSizeClass == .compact ? 450 : nil)
+                .frame(height: horizontalSizeClass == .compact ? 430 : nil)
                 .compositingGroup()
                 .shadow(color: primaryColorInverted.opacity(0.2), radius: horizontalSizeClass == .compact ? 8 : 0)
             }
@@ -101,23 +97,30 @@ struct PaletteEditor: View {
                 Label("Delete Palette", systemImage: "trash")
             }
         }
+        .sheet(isPresented: $showingReport) {
+            FeelingsPieChart(report: FeelingsReport(palette: palette))
+        }
         .toolbar(id: "paletteEditor") {
-            ToolbarItem(id: "report", placement: .secondaryAction) {
-                Button {
-                    showingReport.toggle()
-                } label: {
-                    Label("Palette Report", systemImage: "list.bullet.clipboard")
-                }
-            }
-            
             ToolbarItem(id: "add", placement: .primaryAction) {
                 Button(action: addItem) {
                     Label("Add color", systemImage: "plus.circle")
                 }
             }
         }
-        .sheet(isPresented: $showingReport) {
-            PaletteReportView(palette: palette)
+        .safeAreaInset(edge: .bottom) {
+            Button {
+                showingReport.toggle()
+            } label: {
+                Label("Report", systemImage: "chart.pie")
+                    .frame(maxWidth: 150)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(.thickMaterial.shadow(.inner(color: .primary.opacity(0.6), radius: 0.3)), lineWidth: 5)
+            }
+            .frame(maxWidth: .infinity, maxHeight: 66)
         }
         
     }

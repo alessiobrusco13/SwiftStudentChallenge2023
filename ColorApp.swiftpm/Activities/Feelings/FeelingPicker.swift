@@ -64,6 +64,7 @@ struct FeelingPicker: View {
         }
         .sheet(isPresented: $showingMore) {
             MoreFeelingsView(feelings: moreFeelings, selection: $selection)
+                .presentationDetents([.medium])
         }
     }
     

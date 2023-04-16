@@ -35,18 +35,8 @@ struct EditorSidebar: View {
             }
             
             Section("Feelings Editor") {
-//                Picker("**Feeling:**", selection: $selection.feeling) {
-//                    ForEach(feelings, id: \.self) { feeling in
-//                        Text(feeling.text)
-//                            .tag(Optional(feeling))
-//                    }
-//
-//                    Text("Emotionless 😶")
-//                        .tag(Optional<Feeling>.none)
-//                }
-                
                 FeelingPicker(selection: $selection.feeling, feelings: feelings)
-                    .frame(height: 150)
+                    .frame(height: 100)
                     .padding(.top)
             }
             
@@ -82,6 +72,7 @@ struct EditorSidebar: View {
                 }
             }
         }
+        .accessibilityLabel("Inspector")
         .overlay(alignment: .top) {
             Text("Inspector")
                 .padding(.horizontal, 20)
@@ -90,6 +81,7 @@ struct EditorSidebar: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .frame(height: 46)
                 .background(.thickMaterial)
+                .accessibilityHidden(true)
         }
         .toolbar {
             if nameFocused {
