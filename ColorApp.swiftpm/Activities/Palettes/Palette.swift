@@ -7,7 +7,30 @@ struct Palette: Identifiable, Codable, Hashable, Transferable {
     
     // want to represent it as a folder of colours.
     static var transferRepresentation: some TransferRepresentation {
-        CodableRepresentation(for: Palette.self, contentType: .data)
+        FileRepresentation(exportedContentType: .zip) { palette in
+            let tempDirectory = Model.tmpURL.appending(path: "\(palette.name)–\(UUID().uuidString)")
+            try FileManager.default.createDirectory(at: tempDirectory, withIntermediateDirectories: false)
+            
+            let finalURL = Model.tmpURL.appending(path: "\(palette.name)–\(UUID().uuidString).zip")
+            
+            for item in palette.items {
+                let data =  await item.jpgRepresentation()
+                try data.write(to: tempDirectory.appending(path: "\(item.name).jpg"))
+            }
+            
+            let coordinator = NSFileCoordinator()
+            var error: NSError?
+            
+            coordinator.coordinate(readingItemAt: tempDirectory, options: [.forUploading], error: &error) { zipURL in
+                do {
+                    try FileManager.default.moveItem(at: zipURL, to: finalURL)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            return SentTransferredFile(finalURL)
+        }
     }
     
     func hash(into hasher: inout Hasher) {

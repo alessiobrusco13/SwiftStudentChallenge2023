@@ -3,12 +3,27 @@ import SwiftUI
 @main
 struct MyApp: App {
     @StateObject private var model = Model()
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(model)
-                .onAppear(perform: setUpNavigationTitleFont)
+                .onAppear {
+                    setUpNavigationTitleFont()
+                    createTMPDirectory()
+                }
+                .onChange(of: scenePhase) { phase in
+                    do {
+                        if phase == .background, FileManager.default.fileExists(atPath: Model.tmpURL.path()) {
+                            try FileManager.default.removeItem(at: Model.tmpURL)
+                        } else if phase == .active, !FileManager.default.fileExists(atPath: Model.tmpURL.path()) {
+                            createTMPDirectory()
+                        }
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
         }
     }
     
@@ -23,5 +38,17 @@ struct MyApp: App {
         
         appearence.largeTitleTextAttributes = [.font: largeTitleFontMetrics.scaledFont(for: largeNavTitleFont)]
         appearence.titleTextAttributes = [.font: headlineFontMetrics.scaledFont(for: navTitleFont)]
+    }
+    
+    func createTMPDirectory() {
+        do {
+            let tmp = Model.tmpURL
+            
+            if !FileManager.default.fileExists(atPath: tmp.path()) {
+                try FileManager.default.createDirectory(at: tmp, withIntermediateDirectories: false)
+            }
+        } catch {
+            print(error)
+        }
     }
 }

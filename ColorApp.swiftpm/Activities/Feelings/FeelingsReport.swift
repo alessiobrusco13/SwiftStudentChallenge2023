@@ -101,4 +101,8 @@ struct FeelingsReport {
     func percent(for feeling: Feeling) -> Double {
         feelingPercents[feeling, default: 0]
     }
+    
+    func formattedPercent(for feeling: Feeling) -> String {
+        ((percent(for: feeling) * 100).rounded() / 100).formatted(.percent)
+    }
 }

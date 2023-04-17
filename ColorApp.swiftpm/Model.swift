@@ -7,8 +7,10 @@ class Model: ObservableObject {
     @Published var palettes: [Palette]
     let integratedColors: [PaletteItem]
     
-    private let savePath = URL.documentsDirectory.appendingPathComponent("SavedPalettes")
+    private let savePath = URL.documentsDirectory.appending(path: "SavedPalettes")
     private var saveSubscription: AnyCancellable?
+    
+    static let tmpURL = FileManager.default.temporaryDirectory.appending(path: "PalettesTMP")
     
     init() {
         do {

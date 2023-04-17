@@ -41,7 +41,7 @@ struct EditorSidebar: View {
             }
             
             // TODO: Overlay with suggested name.
-            Section {
+            Section("Info Editor") {
                 LabeledContent("**Name:**") {
                     TextField("e.g. Red", text: $selection.name)
                         .multilineTextAlignment(.trailing)
@@ -56,19 +56,6 @@ struct EditorSidebar: View {
                     
                     Label("Not set", systemImage: "questionmark.square")
                         .tag(Optional<PaletteItem.Role>.none)
-                }
-            } header: {
-                HStack {
-                    Text("Info Editor")
-                    
-                    Spacer()
-                    
-                    Button {
-                        print("Hello")
-                    } label: {
-                        Label("Info", systemImage: "info.circle")
-                            .labelStyle(.iconOnly)
-                    }
                 }
             }
         }

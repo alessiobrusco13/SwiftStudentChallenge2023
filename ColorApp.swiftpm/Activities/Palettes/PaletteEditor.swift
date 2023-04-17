@@ -17,10 +17,15 @@ struct PaletteEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.displayScale) private var displayScale
     
     @State private var selectedItem: PaletteItem?
     @State private var showingReport = false
     @AccessibilityFocusState private var editorFocused: Bool
+    
+    var sharePreview: SharePreview<Image, Never> {
+        SharePreview(palette.name, image: documentImage())
+    }
     
     var body: some View {
         DynamicStack {
@@ -29,7 +34,6 @@ struct PaletteEditor: View {
                     ForEach($palette.items) { $item in
                         Button {
                             withAnimation { selectedItem = item }
-                            editorFocused = true
                         } label: {
                             ColorGridItem(paletteItem: $item)
                         }
@@ -85,7 +89,7 @@ struct PaletteEditor: View {
         .navigationTitle($palette.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(horizontalSizeClass == .compact ? .automatic : .visible, for: .navigationBar)
-        .navigationDocument(palette)
+        .navigationDocument(palette, preview: sharePreview)
         .toolbarTitleMenu {
             // Can't get the 'pencil' icon to show up.
             RenameButton()
@@ -97,8 +101,8 @@ struct PaletteEditor: View {
                 Label("Delete Palette", systemImage: "trash")
             }
         }
-        .sheet(isPresented: $showingReport) {
-            FeelingsPieChart(report: FeelingsReport(palette: palette))
+        .fullScreenCover(isPresented: $showingReport) {
+            PaletteReportView(palette: palette)
         }
         .toolbar(id: "paletteEditor") {
             ToolbarItem(id: "add", placement: .primaryAction) {
@@ -122,7 +126,9 @@ struct PaletteEditor: View {
             }
             .frame(maxWidth: .infinity, maxHeight: 66)
         }
-        
+        .onChange(of: selectedItem) { _ in
+            editorFocused = true
+        }
     }
     var primaryColorInverted: Color {
         (colorScheme == .light) ? .white : .black
@@ -151,6 +157,38 @@ struct PaletteEditor: View {
     
     func isSelected(item: PaletteItem) -> Bool {
         item == selectedItem
+    }
+    
+    @MainActor func documentImage() -> Image {
+        let colors = palette.items
+            .map(\.color)
+            .sorted {
+                guard
+                    let hsba1 = $0.hsbaComponents,
+                    let hsba2 = $1.hsbaComponents
+                else {
+                    return false
+                }
+                
+                return hsba1.hue < hsba2.hue
+            }
+        
+        let renderer = ImageRenderer(
+            content:
+                RoundedRectangle(cornerRadius: 3)
+                .fill(.linearGradient(colors: colors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .blur(radius: 1)
+                .aspectRatio(1, contentMode: .fill)
+        )
+        
+        renderer.scale = displayScale * 100
+        renderer.isOpaque = true
+        
+        if let uiImage = renderer.uiImage {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image(systemName: "questionmark.square")
+        }
     }
 }
 

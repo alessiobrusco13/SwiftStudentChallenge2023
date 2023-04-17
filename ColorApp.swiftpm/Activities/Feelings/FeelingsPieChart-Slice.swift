@@ -54,7 +54,7 @@ extension FeelingsPieChart {
             .overlay {
                 SliceShape(startAngle: data.startAngle, endAngle: data.endAngle)
                     .strokeBorder(
-                        .regularMaterial.shadow(.inner(color: .primary.opacity(0.6), radius: 0.3)),
+                        .regularMaterial,
                         style: StrokeStyle(lineWidth: strokeWidth, lineJoin: .round)
                     )
             }

@@ -13,6 +13,7 @@ struct FlowLayout: Layout {
     }
     
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) {
+        guard !subviews.isEmpty else { return }
         var point = CGPoint(x: bounds.minX, y: bounds.minY)
         
         let horizontalSpacing = horizontalSpacing(subviews: subviews)
@@ -38,14 +39,14 @@ struct FlowLayout: Layout {
         }
     }
     
-    func horizontalSpacing(subviews: Subviews) -> [CGFloat] {
+    private func horizontalSpacing(subviews: Subviews) -> [CGFloat] {
         subviews.indices.map { index in
             guard index < subviews.count - 1 else { return 0 }
             return subviews[index].spacing.distance(to: subviews[index + 1].spacing, along: .horizontal)
         }
     }
     
-    func maxVerticalSpacing(subviews: Subviews) -> CGFloat {
+    private func maxVerticalSpacing(subviews: Subviews) -> CGFloat {
         let spacing: [CGFloat] = subviews.indices.map { index in
             guard index < subviews.count - 1 else { return 0 }
             return subviews[index].spacing.distance(to: subviews[index + 1].spacing, along: .vertical)
