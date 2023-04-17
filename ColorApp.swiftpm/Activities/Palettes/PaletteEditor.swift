@@ -28,61 +28,63 @@ struct PaletteEditor: View {
     }
     
     var body: some View {
-        DynamicStack {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], alignment: .center) {
-                    ForEach($palette.items) { $item in
-                        Button {
-                            withAnimation { selectedItem = item }
-                        } label: {
-                            ColorGridItem(paletteItem: $item)
-                        }
-                        .buttonStyle(.selectable(isSelected: isSelected(item: item)))
-                        .contextMenu {
-                            DeleteButton {
-                                withAnimation {
-                                    let index = model.index(for: item, in: palette)
-                                    palette.items.remove(at: index)
+        GeometryReader { proxy in
+            DynamicStack {
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], alignment: .center) {
+                        ForEach($palette.items) { $item in
+                            Button {
+                                withAnimation { selectedItem = item }
+                            } label: {
+                                ColorGridItem(paletteItem: $item)
+                            }
+                            .buttonStyle(.selectable(isSelected: isSelected(item: item)))
+                            .contextMenu {
+                                DeleteButton {
+                                    withAnimation {
+                                        let index = model.index(for: item, in: palette)
+                                        palette.items.remove(at: index)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-            }
-            
-            Spacer(minLength: 0)
-            
-            // Try using half-sheet with interactive background.
-            DynamicStack(spacing: 0) {
-                if horizontalSizeClass == .regular {
-                    Divider()
-                        .ignoresSafeArea()
+                    .padding()
+                    .frame(maxWidth: .infinity)
                 }
                 
-                Group {
-                    if let selectedItem {
-                        EditorSidebar(selection: selectedItemBinding(unwrappedSelected: selectedItem))
-                            .accessibilityFocused($editorFocused)
-                    } else {
-                        Color(.systemGroupedBackground)
+                Spacer(minLength: 0)
+                
+                // Try using half-sheet with interactive background.
+                DynamicStack(spacing: 0) {
+                    if horizontalSizeClass == .regular {
+                        Divider()
                             .ignoresSafeArea()
-                            .overlay {
-                                Text(
-                                    palette.items.isEmpty
-                                    ? "Add a new color"
-                                    : "Select a color"
-                                )
-                                .foregroundColor(.secondary)
-                                .font(.title.weight(.medium))
-                            }
                     }
+                    
+                    Group {
+                        if let selectedItem {
+                            EditorSidebar(selection: selectedItemBinding(unwrappedSelected: selectedItem))
+                                .accessibilityFocused($editorFocused)
+                        } else {
+                            Color(.systemGroupedBackground)
+                                .ignoresSafeArea()
+                                .overlay {
+                                    Text(
+                                        palette.items.isEmpty
+                                        ? "Add a new color"
+                                        : "Select a color"
+                                    )
+                                    .foregroundColor(.secondary)
+                                    .font(.title.weight(.medium))
+                                }
+                        }
+                    }
+                    .frame(maxWidth: horizontalSizeClass == .compact ? nil : 400)
+                    .frame(height: horizontalSizeClass == .compact ? proxy.frame(in: .global).height * 0.6 : nil)
+                    .compositingGroup()
+                    .shadow(color: primaryColorInverted.opacity(0.2), radius: horizontalSizeClass == .compact ? 8 : 0)
                 }
-                .frame(maxWidth: horizontalSizeClass == .compact ? nil : 400)
-                .frame(height: horizontalSizeClass == .compact ? 430 : nil)
-                .compositingGroup()
-                .shadow(color: primaryColorInverted.opacity(0.2), radius: horizontalSizeClass == .compact ? 8 : 0)
             }
         }
         .toolbarRole(.editor)
