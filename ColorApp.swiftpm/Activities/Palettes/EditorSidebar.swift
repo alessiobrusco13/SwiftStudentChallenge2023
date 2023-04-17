@@ -13,6 +13,7 @@ struct EditorSidebar: View {
     
     @State private var showingNameField = false
     @FocusState private var nameFocused: Bool
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var feelings: [Feeling] {
         withAnimation {
@@ -36,7 +37,7 @@ struct EditorSidebar: View {
             
             Section("Feelings Editor") {
                 FeelingPicker(selection: $selection.feeling, feelings: feelings)
-                    .frame(height: 100)
+                    .frame(height: horizontalSizeClass == .compact ? 100 : 145)
                     .padding(.top)
             }
             

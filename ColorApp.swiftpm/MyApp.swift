@@ -17,6 +17,7 @@ struct MyApp: App {
                     do {
                         if phase == .background, FileManager.default.fileExists(atPath: Model.tmpURL.path()) {
                             try FileManager.default.removeItem(at: Model.tmpURL)
+                            model.save()
                         } else if phase == .active, !FileManager.default.fileExists(atPath: Model.tmpURL.path()) {
                             createTMPDirectory()
                         }
