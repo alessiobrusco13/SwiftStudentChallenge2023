@@ -11,8 +11,11 @@ struct MyApp: App {
                 .environmentObject(model)
                 .onAppear {
                     setUpNavigationTitleFont()
+                    #if targetEnvironment(simulator)
                     createTMPDirectory()
+                    #endif
                 }
+            #if targetEnvironment(simulator)
                 .onChange(of: scenePhase) { phase in
                     do {
                         if phase == .background, FileManager.default.fileExists(atPath: Model.tmpURL.path()) {
@@ -25,6 +28,7 @@ struct MyApp: App {
                         print(error.localizedDescription)
                     }
                 }
+            #endif
         }
     }
     

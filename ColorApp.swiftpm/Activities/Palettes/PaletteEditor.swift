@@ -91,7 +91,7 @@ struct PaletteEditor: View {
         .navigationTitle($palette.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(horizontalSizeClass == .compact ? .automatic : .visible, for: .navigationBar)
-        .navigationDocument(palette, preview: sharePreview)
+        .navigationDocument(palette)
         .toolbarTitleMenu {
             // Can't get the 'pencil' icon to show up.
             RenameButton()
@@ -161,6 +161,7 @@ struct PaletteEditor: View {
         item == selectedItem
     }
     
+    // MARK: - Causes 100 memory leaks.
     @MainActor func documentImage() -> Image {
         let colors = palette.items
             .map(\.color)
