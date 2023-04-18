@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct MyApp: App {
+struct FeelItApp: App {
     @StateObject private var model = Model()
     @Environment(\.scenePhase) private var scenePhase
     

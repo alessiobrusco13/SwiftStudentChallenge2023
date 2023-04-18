@@ -13,6 +13,7 @@ struct FeelingsReport {
         let startAngle: Angle
         let endAngle: Angle
         let colors: [Color]
+        let percent: Double
     }
     
     private let feelingPercents: [Feeling: Double]
@@ -38,7 +39,8 @@ struct FeelingsReport {
                 feeling: feeling,
                 startAngle: angle,
                 endAngle: angle + delta,
-                colors: colors
+                colors: colors,
+                percent: percent
             ))
             
             angle += delta
@@ -53,6 +55,15 @@ struct FeelingsReport {
         return feelingPercents.keys
             .filter { feelingPercents[$0] == max }
             .sorted { $0.text < $1.text }
+    }
+    
+    // Max score 10
+    var coherenceScore: Int {
+        let pairs = feelings.combinations(ofCount: 2).filter { $0[0] != $0[1] }
+        let inconsistent = pairs.filter { !Feeling.areConsistent($0[0], $0[1]) }
+        let unformatted = 10 - (10 * (Double(inconsistent.count) / Double(pairs.count)))
+        
+        return Int(unformatted.rounded())
     }
     
     init(palette: Palette) {

@@ -14,6 +14,15 @@ struct ContentView: View {
                 BackgroundView()
                 
                 ScrollView {
+                    if model.palettes.isEmpty {
+                        Text("Create a new Palette to Feel It")
+                            .foregroundColor(.secondary)
+                            .font(.title3.weight(.medium).width(.expanded))
+                            .padding()
+                            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                            .padding(.top, 75)
+                    }
+                    
                     LazyVGrid(columns: columns, alignment: .center, spacing: 20) {
                         ForEach($model.palettes) { $palette in
                             NavigationLink(value: palette) {
@@ -48,7 +57,9 @@ struct ContentView: View {
     }
     
     func addPalette() {
-        let newPalette = model.addPalette()
-        path.append(newPalette)
+        withAnimation {
+            let newPalette = model.addPalette()
+            path.append(newPalette)
+        }
     }
 }

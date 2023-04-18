@@ -3,6 +3,21 @@ import Foundation
 enum Feeling: Codable, CaseIterable, Hashable {
     case power, excitement, love, anger, competence, happiness, lowQuality, ecoFriendliness, health, sophistication, corporate, reliability, authority, sincerity, warmth, ruggedness, fear, expensiveness, purity, neutrality, balance, inexpensiveness, envy, money, hope
     
+    static func areConsistent(_ feeling1: Feeling, _ feeling2: Feeling) -> Bool {
+        if Feeling.neutralGroup.contains(feeling1) || Feeling.neutralGroup.contains(feeling2) { return true }
+        let set = Set([feeling1, feeling2])
+        
+        if set.isSubset(of: Feeling.group1) || set.isSubset(of: Feeling.group2) {
+            return true
+        }
+        
+        return false
+    }
+    
+    static let group1: Set<Feeling> = [.excitement, .love, .happiness, .sincerity, .warmth, .hope, .ecoFriendliness, .reliability, .balance, .health]
+    static let group2: Set<Feeling> = [.power, .anger, .fear, .envy, .lowQuality]
+    static let neutralGroup: Set<Feeling> = [.neutrality, .inexpensiveness, .expensiveness, .ruggedness, .purity, .money, .corporate, .authority, .sophistication, .reliability, .health, .corporate]
+    
     var label: String {
         "\(emoji) \(text)"
     }

@@ -2,10 +2,9 @@ import Combine
 import Foundation
 import SwiftUI
 
-// MARK: codebrainz/color-names!!!
+
 class Model: ObservableObject {
     @Published var palettes: [Palette]
-    let integratedColors: [PaletteItem]
     
     private let savePath = URL.documentsDirectory.appending(path: "SavedPalettes")
     private var saveSubscription: AnyCancellable?
@@ -20,20 +19,6 @@ class Model: ObservableObject {
             palettes = []
         }
         
-        let colorNamesDictionary = Bundle.main.decode([String: ColorName].self, from: "colors.json")
-        integratedColors = Array(colorNamesDictionary.values)
-            .map(PaletteItem.init)
-            .sorted {
-                guard
-                    let (h1, _, _, _) = $0.color.hsbaComponents,
-                    let (h2, _, _, _) = $1.color.hsbaComponents
-                else {
-                    return false
-                }
-                
-                return h1 < h2
-            }
-        
         saveSubscription = $palettes
             .debounce(for: 5, scheduler: RunLoop.main)
             .sink { [weak self] _ in
@@ -47,10 +32,6 @@ class Model: ObservableObject {
         palettes.append(palette)
         
         return palette
-    }
-    
-    func name(for item: PaletteItem) -> String? {
-        integratedColors.first { $0.color.rgbValues == item.color.rgbValues }?.name
     }
     
     func paletteBinding(for palette: Palette) -> Binding<Palette> {

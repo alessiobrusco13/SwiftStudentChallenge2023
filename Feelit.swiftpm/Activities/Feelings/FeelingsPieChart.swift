@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeelingsPieChart: View {
     let report: FeelingsReport
+    @ScaledMetric(relativeTo: .largeTitle) private var size = 120
     
     var chartDescription: String {
         var descripiton = ""
@@ -44,27 +45,18 @@ struct FeelingsPieChart: View {
                 Circle()
                     .fill(.thinMaterial)
                     .frame(width: width * 0.549)
-                
-                if let top = report.topFeelings {
-                    VStack(spacing: 10) {
-                        Text(
-                            top.count == 1
-                            ? "The feeling you conveyed the most is:"
-                            : "The feelings you conveyed the most are:"
-                        )
-                        .minimumScaleFactor(0.01)
-                        
-                        ForEach(top, id: \.self) { feeling in
-                            Text(feeling.label)
-                                .font(.title3.weight(.medium).width(.expanded))
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.01)
                                 
-                        }
-                    }
-                    .frame(width: width * 0.4, height: width * 0.4)
-                    .multilineTextAlignment(.center)
+                VStack {
+                    Text(report.coherenceScore.formatted())
+                        .font(.system(size: size, weight: .bold, design: .rounded))
+                        .foregroundStyle(report.coherenceScore > 5 ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.red.gradient))
+                    
+                    Text("Coherence Score")
+                        .font(.subheadline.weight(.semibold).width(.expanded))
+                        .multilineTextAlignment(.center)
                 }
+                .frame(width: width * 0.4, height: width * 0.4)
+                .minimumScaleFactor(0.8)
             }
         }
         .aspectRatio(1, contentMode: .fit)

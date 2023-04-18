@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "My App",
+    name: "Feel It",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "My App",
+            name: "Feel It",
             targets: ["AppModule"],
             bundleIdentifier: "it.sacrocuorenapoli.ColorApp",
             teamIdentifier: "CRNS2UJVKT",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .cloud),
+            appIcon: .placeholder(icon: .palette),
             accentColor: .presetColor(.indigo),
             supportedDeviceFamilies: [
                 .pad,

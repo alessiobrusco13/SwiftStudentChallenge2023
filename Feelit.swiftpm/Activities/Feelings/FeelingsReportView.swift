@@ -20,7 +20,7 @@ struct FeelingsReportView: View {
                     .padding()
                 
                 LazyVGrid(columns: [.init(.adaptive(minimum: 150), alignment: .leading)], alignment: .leading) {
-                    ForEach(report.chartData, id: \.feeling) { data in
+                    ForEach(report.chartData.sorted { $0.percent < $1.percent}, id: \.feeling) { data in
                         HStack {
                             Text(data.feeling.emoji)
                                 .padding(4.5)
