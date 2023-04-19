@@ -31,6 +31,7 @@ struct FeelingsReportView: View {
                                     Circle()
                                         .stroke(.regularMaterial.shadow(.inner(color: .primary.opacity(0.6), radius: 0.3)), lineWidth: 4)
                                 }
+                                .accessibilityHidden(true)
                             
                             Text("\(data.feeling.text) \(report.formattedPercent(for: data.feeling))")
                                 .font(.callout)

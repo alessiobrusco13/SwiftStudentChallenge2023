@@ -10,6 +10,7 @@ class Model: ObservableObject {
     private var saveSubscription: AnyCancellable?
     
     static let tmpURL = FileManager.default.temporaryDirectory.appending(path: "PalettesTMP")
+    static let needsOnboarding = "needsOnboarding"
     
     init() {
         do {

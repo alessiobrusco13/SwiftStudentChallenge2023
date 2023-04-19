@@ -4,6 +4,7 @@ import SwiftUI
 struct FeelItApp: App {
     @StateObject private var model = Model()
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(Model.needsOnboarding) private var needsOnboarding = true
     
     var body: some Scene {
         WindowGroup {
@@ -29,6 +30,9 @@ struct FeelItApp: App {
                     }
                 }
             #endif
+                .fullScreenCover(isPresented: .constant(false)) {
+                    OnboardingView()
+                }
         }
     }
     

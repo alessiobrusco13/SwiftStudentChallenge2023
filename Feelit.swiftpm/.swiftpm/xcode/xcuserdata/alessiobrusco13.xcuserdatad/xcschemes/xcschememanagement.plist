@@ -32,6 +32,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>Feel It</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>My App</key>
 		<dict>
 			<key>primary</key>

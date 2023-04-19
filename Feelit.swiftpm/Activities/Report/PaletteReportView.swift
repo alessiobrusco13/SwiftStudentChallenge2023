@@ -20,7 +20,7 @@ struct PaletteReportView: View {
                 BackgroundView()
                     .ignoresSafeArea()
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     FeelingsReportView(report: feelingsReport)
                 }
             }
