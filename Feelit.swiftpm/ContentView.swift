@@ -42,8 +42,6 @@ struct ContentView: View {
                     .navigationDestination(for: Palette.self) { palette in
                         PaletteEditor(palette: model.paletteBinding(for: palette))
                     }
-                    // Which is more appropriate between 'navigationStack' and 'browser'?
-                    //                    .toolbarRole(.browser) 
                     .toolbar {
                         Button(action: addPalette) {
                             Label("Add Palette", systemImage: "plus")

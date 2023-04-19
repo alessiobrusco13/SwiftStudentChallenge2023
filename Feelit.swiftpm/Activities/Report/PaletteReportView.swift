@@ -1,16 +1,9 @@
-//
-//  PaletteReportView.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 17/04/23.
-//
-
 import SwiftUI
 
 struct PaletteReportView: View {
     let palette: Palette
     
-    var feelingsReport: FeelingsReport {
+    var feelingsReport: FeelingsReport? {
         FeelingsReport(palette: palette)
     }
     

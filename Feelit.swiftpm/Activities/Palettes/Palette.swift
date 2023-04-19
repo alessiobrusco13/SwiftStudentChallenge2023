@@ -5,7 +5,13 @@ struct Palette: Identifiable, Codable, Hashable, Transferable {
     var name = "Untitled"
     var items = [PaletteItem]()
     
-    // want to represent it as a folder of colours.
+    static let defaultPalette = Palette(name: "Welcome", items: [
+        PaletteItem(color: Color(rgb: RGBValues(219, 31, 72)), name: "Red", feeling: .love),
+        PaletteItem(color: Color(rgb: RGBValues(0, 67, 105)), name: "Navy Blue", feeling: .reliability),
+        PaletteItem(color: Color(rgb: RGBValues(0, 148, 154)), name: "Teal", feeling: .sophistication),
+        PaletteItem(color: Color(rgb: RGBValues(230, 221, 200)), name: "Sand Dollar", feeling: .neutrality)
+    ])
+    
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(exportedContentType: .zip) { palette in
             let tempDirectory = Model.tmpURL.appending(path: "\(palette.name)–\(UUID().uuidString)")

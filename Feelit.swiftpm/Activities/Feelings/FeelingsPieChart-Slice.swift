@@ -1,10 +1,3 @@
-//
-//  FeelingsPieChart-Slice.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 16/04/23.
-//
-
 import SwiftUI
 
 struct SliceShape: InsettableShape {
@@ -65,7 +58,7 @@ extension FeelingsPieChart {
 struct Slice_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            FeelingsPieChart.Slice(data: FeelingsReport(palette: .example).chartData.first!, strokeWidth: 10)
+            FeelingsPieChart.Slice(data: FeelingsReport(palette: .example)!.chartData.first!, strokeWidth: 10)
         }
     }
 }

@@ -1,10 +1,3 @@
-//
-//  GridLayout.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 17/04/23.
-//
-
 import SwiftUI
 
 struct GridLayout: Layout {

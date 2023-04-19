@@ -1,10 +1,3 @@
-//
-//  Color-HSBAComponents.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 08/04/23.
-//
-
 import SwiftUI
 
 extension Color {

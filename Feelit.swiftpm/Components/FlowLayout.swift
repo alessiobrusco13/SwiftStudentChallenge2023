@@ -1,10 +1,3 @@
-//
-//  FlowLayout.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 13/04/23.
-//
-
 import SwiftUI
 
 struct FlowLayout: Layout {

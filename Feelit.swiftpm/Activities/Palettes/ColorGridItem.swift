@@ -1,10 +1,3 @@
-//
-//  ColorItem.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 30/03/23.
-//
-
 import SwiftUI
 
 struct ColorGridItem: View {

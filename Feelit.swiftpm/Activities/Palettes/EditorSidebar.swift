@@ -1,10 +1,3 @@
-//
-//  EditorSidebar.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 11/04/23.
-//
-
 import SwiftUI
 
 struct EditorSidebar: View {

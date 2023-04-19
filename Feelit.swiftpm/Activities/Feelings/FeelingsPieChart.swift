@@ -1,10 +1,3 @@
-//
-//  FeelingsPieChart.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 15/04/23.
-//
-
 import SwiftUI
 
 struct FeelingsPieChart: View {
@@ -77,6 +70,6 @@ struct FeelingsPieChart: View {
 
 struct FeelingsPieChart_Previews: PreviewProvider {
     static var previews: some View {
-        FeelingsPieChart(report: FeelingsReport(palette: .example))
+        FeelingsPieChart(report: FeelingsReport(palette: .example)!)
     }
 }

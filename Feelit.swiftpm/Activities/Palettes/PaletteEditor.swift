@@ -1,19 +1,9 @@
-//
-//  PaletteEditor.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 29/03/23.
-//
-
-// TODO: Name suggestion view
-
 import SwiftUI
 
 struct PaletteEditor: View {
     @Binding var palette: Palette
     
     @EnvironmentObject private var model: Model
-    //    @Environment(\.rename) private var rename
     @Environment(\.dismiss) private var dismiss
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme

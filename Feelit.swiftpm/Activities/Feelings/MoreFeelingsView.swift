@@ -1,10 +1,3 @@
-//
-//  MoreFeelingsView.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 15/04/23.
-//
-
 import SwiftUI
 
 struct MoreFeelingsView: View {

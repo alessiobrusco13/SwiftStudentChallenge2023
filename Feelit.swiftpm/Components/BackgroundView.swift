@@ -1,10 +1,3 @@
-//
-//  BackgroundView.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 29/03/23.
-//
-
 import SwiftUI
 
 struct BackgroundView: View {

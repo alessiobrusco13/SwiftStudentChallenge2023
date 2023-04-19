@@ -1,10 +1,3 @@
-//
-//  SelectableButtonStyle.swift
-//  My App
-//
-//  Created by Alessio Garzia Marotta Brusco on 01/04/23.
-//
-
 import SwiftUI
 
 struct SelectableButtonStyle: ButtonStyle {

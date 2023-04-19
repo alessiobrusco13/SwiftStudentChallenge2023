@@ -30,7 +30,9 @@ struct FeelItApp: App {
                     }
                 }
             #endif
-                .fullScreenCover(isPresented: .constant(false)) {
+                .fullScreenCover(isPresented: $needsOnboarding) {
+                    model.palettes = [.defaultPalette]
+                } content: {
                     OnboardingView()
                 }
         }

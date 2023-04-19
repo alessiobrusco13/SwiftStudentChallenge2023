@@ -6,9 +6,12 @@ struct RGBSlider: View {
     @State private var rgb: RGBValues
     @FocusState private var focused: RGB?
     
-    init(paletteItem: Binding<PaletteItem>) {
+    let textFieldsHidden: Bool
+    
+    init(paletteItem: Binding<PaletteItem>, textFieldsHidden: Bool = false) {
         _paletteItem = paletteItem
         _rgb = State(wrappedValue: paletteItem.wrappedValue.color.rgbValues)
+        self.textFieldsHidden = textFieldsHidden
     }
     
     var body: some View {
@@ -16,43 +19,49 @@ struct RGBSlider: View {
             GridRow {
                 SliderComponent(value: .r, rgb: $rgb, paletteItem: $paletteItem)
                 
-                Spacer(minLength: 16)
-                
-                TextField("Red", value: $rgb.red, format: .number)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 60)
-                    .focused($focused, equals: .r)
-                    .accessibilityLabel("Red Field")
+                if !textFieldsHidden {
+                    Spacer(minLength: 16)
+                    
+                    TextField("Red", value: $rgb.red, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.numberPad)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 60)
+                        .focused($focused, equals: .r)
+                        .accessibilityLabel("Red Field")
+                }
             }
             
             GridRow {
                 SliderComponent(value: .g, rgb: $rgb, paletteItem: $paletteItem)
                 
-                Spacer(minLength: 16)
-                
-                TextField("Green", value: $rgb.green, format: .number)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 60)
-                    .focused($focused, equals: .g)
-                    .accessibilityLabel("Green Field")
+                if !textFieldsHidden {
+                    Spacer(minLength: 16)
+                    
+                    TextField("Green", value: $rgb.green, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.numberPad)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 60)
+                        .focused($focused, equals: .g)
+                        .accessibilityLabel("Green Field")
+                }
             }
             
             GridRow {
                 SliderComponent(value: .b, rgb: $rgb, paletteItem: $paletteItem)
                 
-                Spacer(minLength: 16)
-                
-                TextField("Blue", value: $rgb.blue, format: .number)
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 60)
-                    .focused($focused, equals: .b)
-                    .accessibilityLabel("Blue Field")
+                if !textFieldsHidden {
+                    Spacer(minLength: 16)
+                    
+                    TextField("Blue", value: $rgb.blue, format: .number)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.numberPad)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 60)
+                        .focused($focused, equals: .b)
+                        .accessibilityLabel("Blue Field")
+                }
             }
         }
         .onChange(of: rgb) { newRGB in
@@ -61,9 +70,9 @@ struct RGBSlider: View {
             rgb.blue = min(newRGB.blue, 255)
             update()
         }
-        .onChange(of: paletteItem) { item in
+        .onChange(of: paletteItem.color) { color in
             withAnimation {
-                rgb = item.color.rgbValues
+                rgb = color.rgbValues
             }
         }
         .toolbar {

@@ -1,10 +1,3 @@
-//
-//  FeelingsReport.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 16/04/23.
-//
-
 import SwiftUI
 
 struct FeelingsReport {
@@ -59,6 +52,8 @@ struct FeelingsReport {
     
     // Max score 10
     var coherenceScore: Int {
+        guard feelings.count > 1 else { return 10 }
+        
         let pairs = feelings.combinations(ofCount: 2).filter { $0[0] != $0[1] }
         let inconsistent = pairs.filter { !Feeling.areConsistent($0[0], $0[1]) }
         let unformatted = 10 - (10 * (Double(inconsistent.count) / Double(pairs.count)))
@@ -66,7 +61,9 @@ struct FeelingsReport {
         return Int(unformatted.rounded())
     }
     
-    init(palette: Palette) {
+    init?(palette: Palette) {
+        guard !palette.items.map(\.feeling).compactMap({ $0 }).isEmpty else { return nil }
+        
         var feelingItems = [PaletteItem]()
         var feelinglessItems = [PaletteItem]()
         

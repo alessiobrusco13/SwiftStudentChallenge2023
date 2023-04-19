@@ -16,6 +16,8 @@ struct PaletteGridItem: View {
                 ForEach(items) { item in
                     item.color
                         .frame(minHeight: 80)
+                    
+                    Divider()
                 }
                 
                 if items.isEmpty {

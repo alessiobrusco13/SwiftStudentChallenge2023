@@ -39,11 +39,10 @@ class Model: ObservableObject {
         let index = index(for: palette)
         
         return Binding {
-            // TODO: Fix this issue.
-            // Why do I need this?? I could also not use the navigationDestination API and avoid the issue entierly.
-            guard self.palettes.indices.contains(index) else { return Palette() }
+            guard self.palettes.indices.contains(index) else { return .example }
             return self.palettes[index]
-        } set: { [self] in
+        } set: {
+            guard self.palettes.indices.contains(index) else { return }
             self.palettes[index] = $0
         }
     }
@@ -51,7 +50,7 @@ class Model: ObservableObject {
     private func index(for palette: Palette) -> Int {
         palettes.firstIndex(of: palette) ?? 0
     }
-
+    
     func index(for item: PaletteItem, in palette: Palette) -> Int {
         palette.items.firstIndex { $0 == item } ?? 0
     }

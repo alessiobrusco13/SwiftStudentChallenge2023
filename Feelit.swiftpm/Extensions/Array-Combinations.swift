@@ -1,10 +1,3 @@
-//
-//  Array-Combinations.swift
-//  
-//
-//  Created by Alessio Garzia Marotta Brusco on 18/04/23.
-//
-
 import Foundation
 
 extension Array {
