@@ -27,7 +27,6 @@ struct MoreFeelingsView: View {
             }
             .navigationTitle("More feelings...")
             .navigationBarTitleDisplayMode(.inline)
-            // TODO: Reivew text.
             .alert(
                 "Warning",
                 isPresented: $showingAlert,
